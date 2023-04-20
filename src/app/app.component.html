@@ -1,0 +1,47 @@
+<h1 class="title p-5 display-6">Lista de Tarefas - Angular 7</h1>
+
+<ul *ngIf="mode == 'list'">
+
+  <p class="text-center mb-0" *ngIf="todos.length == 0">
+    <small>
+      Nenhuma tarefa foi encontrada.
+    </small>
+  </p>
+
+  <li *ngFor="let todo of todos">
+    {{ todo.title }}
+    <button *ngIf="!todo.done" (click)="markAsDone(todo)">
+     <i class="far fa-check-circle"></i> CONCLUIR
+    </button>
+    <button *ngIf="todo.done" (click)="markAsUndone(todo)">
+     <i class="fas fa-check-circle"></i> REFAZER
+    </button>
+    <button (click)="remove(todo)">
+     <i class="fas fa-trash-alt "></i> REMOVER
+    </button>
+  </li>
+</ul>
+
+<div id="modal" *ngIf="mode == 'add'">
+  <h4 class="text-center p-3">Escolha um título para a Tarefa</h4>
+  <form [formGroup]="form">
+      <input class="form-control" type="text" placeholder="Digite o título" maxlength="60" formControlName="title">
+      <label class="text-center danger mt-3" *ngIf="form.controls.title.invalid && !form.controls.title.pristine">
+        Este campo deve conter entre 3 e 60 caracteres!
+      </label>
+
+        <p class="text-center">
+          <button class="btn btn-success mt-3" [disabled]="form.invalid" (click)="add()">
+            <i class="far fa-save"></i> Salvar
+          </button>
+        </p>
+  </form>
+</div>
+
+<button class="btn btn-success" (click)="changeMode('add')" *ngIf="mode == 'list'">
+  <i class="fas fa-plus-circle"></i> Nova tarefa
+</button>
+
+<button class="btn btn-danger" (click)="changeMode('list')" *ngIf="mode == 'add'">
+  <i class="fas fa-times"></i> Cancelar
+</button>
